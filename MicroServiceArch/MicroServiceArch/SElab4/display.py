@@ -15,6 +15,11 @@ import hashlib
 
 class Register(viewsets.ViewSet):
 
+    def user_request_type(self, request):
+        user = User()
+        data = request.data
+
+
 
 
 class Login(viewsets.ViewSet):
