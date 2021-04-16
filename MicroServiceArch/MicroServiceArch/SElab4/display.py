@@ -18,7 +18,16 @@ class Register(viewsets.ViewSet):
     def user_request_type(self, request):
         user = User()
         data = request.data
-
+        try:
+            user.username = data['username']
+            user.password =  hashlib.md5(data['password'].encode('utf-8')).digest()
+            user.email= data['email']
+            user.mobile = data['mobile']
+            user.save()
+           
+        except KeyError:
+            return HttpResponse('EMPTY_FIELDS', status=406)
+        return HttpResponse('user registered successfully.', status=200)
 
 
 
