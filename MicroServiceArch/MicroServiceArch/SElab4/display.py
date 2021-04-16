@@ -40,7 +40,19 @@ class Login(viewsets.ViewSet):
 
         except KeyError:
             return HttpResponse('EMPTY_FIELDS', status=406)
-
+        user = User.objects.get(username=username)
+        # check if the password is correct or not
+        if str(user.password) == str(hashlib.md5(password.encode('utf-8')).digest()):
+            t =  django.utils.timezone.now()
+            if user.token_time > t:
+                return HttpResponse(user.token, status=200)
+            else:
+                user.token = ''.join(random.choices(string.ascii_uppercase + string.digits, k=100))
+                user.token_exp_time = django.utils.timezone.now() + django.utils.timezone.timedelta(hours=1, minutes=30)
+                user.save()
+                return HttpResponse(user.token, status=200)
+        else:
+            return HttpResponse("NOT FOUND", status=404)
 
 
 
