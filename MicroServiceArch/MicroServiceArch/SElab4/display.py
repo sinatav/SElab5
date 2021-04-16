@@ -2,12 +2,14 @@
 from SElab4.models import User
 from django.shortcuts import render
 import requests
+from django.http import HttpResponse
 
 from rest_framework import viewsets
 from rest_framework.response import Response
 
 #TODO each user should be able to register, login, show and update their profiles
 
+initiate_values = {"register_count" :0, "login_counts" : 0, "show_counts" : 0, "update_counts" : 0}
 class API_gateway(viewsets.ViewSet):
 
     def user_request_type(self,request):
@@ -18,33 +20,46 @@ class API_gateway(viewsets.ViewSet):
             try:
                 return self.register(request.data)
             except:
-                #TODO  handle the more than 3 times req part
+               initiate_values['register_count'] += 1
+               if self.is_request_timeout(initiate_values['register_count']):
+                   print("REQUEST_TIMEOUT")
+
 
         elif req_type == "login":
             try:
                 return self.login(request.data)
             except:
-                #TODO  handle the more than 3 times req part
+                initiate_values['login_count'] += 1
+                if self.is_request_timeout(initiate_values['login_count']):
+                    print("REQUEST_TIMEOUT")
+
 
         elif req_type == "show":
             try:
                 return self.show(request.data)
             except:
-                #TODO  handle the more than 3 times req part
+                initiate_values['show_count'] += 1
+                if self.is_request_timeout(initiate_values['show_count']):
+                    print("REQUEST_TIMEOUT")
 
         elif req_type == "update":
             try:
                 return self.update(request.data)
             except:
-                #TODO  handle the more than 3 times req part
-
+                initiate_values['update_count'] += 1
+                if self.is_request_timeout(initiate_values['update_count']):
+                    print("REQUEST_TIMEOUT")
 
         else :
             return HttpResponse('Bad Request', status=400)
 
 
 
-
+    def is_request_timeout(self, request_count):
+        if request_count >=3:
+            return True
+        else:
+            return False
 
     def register(self,data):
         #TODO
