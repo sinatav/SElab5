@@ -33,6 +33,15 @@ class Register(viewsets.ViewSet):
 
 class Login(viewsets.ViewSet):
 
+    def user_request_type(self, request):
+        try:
+            username = request.data['username']
+            password =   str(request.data['password'])
+
+        except KeyError:
+            return HttpResponse('EMPTY_FIELDS', status=406)
+
+
 
 
 
