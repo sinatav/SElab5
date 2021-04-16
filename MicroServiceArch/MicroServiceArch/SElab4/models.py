@@ -11,3 +11,4 @@ class User(models.Model):
     email = models.EmailField()
     isAdmin = models.BooleanField(default=False)
     token = models.CharField(max_length=256, default="")
+    token_time = models.DateTimeField(auto_now=True)
