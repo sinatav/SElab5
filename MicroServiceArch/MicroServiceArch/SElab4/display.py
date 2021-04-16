@@ -11,6 +11,33 @@ import hashlib
 
 #TODO each user should be able to register, login, show and update their profiles
 
+
+
+class Register(viewsets.ViewSet):
+
+
+
+class Login(viewsets.ViewSet):
+
+
+
+
+class Show(viewsets.ViewSet):
+
+
+
+
+class Update(viewsets.ViewSet):
+
+
+
+
+
+
+
+
+
+
 initiate_values = {"register_count" :0, "login_counts" : 0, "show_counts" : 0, "update_counts" : 0}
 class API_gateway(viewsets.ViewSet):
 
@@ -55,22 +82,30 @@ class API_gateway(viewsets.ViewSet):
         else :
             return HttpResponse('Bad Request', status=400)
 
-
+    def set_response(self, data, url):
+        response = requests.post(url, data=data)
+        return HttpResponse(response.text, status=response.status_code)
 
     def is_request_timeout(self, request_count):
-        if request_count >=3:
+        if request_count >= 3:
             return True
         else:
             return False
 
+
+
     def register(self,data):
         url = 'http://127.0.0.1:8000/api/register'
+        self.set_response(data, url)
     def login(self,data):
         url = 'http://127.0.0.1:8000/api/login'
+        self.set_response(data, url)
     def show(self,data):
         url = 'http://127.0.0.1:8000/api/show'
+        self.set_response(data, url)
     def update(self,data):
         url = 'http://127.0.0.1:8000/api/update'
+        self.set_response(data, url)
 
 
 
