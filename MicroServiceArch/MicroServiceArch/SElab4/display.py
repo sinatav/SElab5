@@ -8,13 +8,10 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 
 import hashlib
-import datetime
 import random
 import string
 
 #TODO each user should be able to register, login, show and update their profiles
-
-
 
 class Register(viewsets.ViewSet):
 
@@ -70,21 +67,44 @@ class Show(viewsets.ViewSet):
 
         user = User.objects.get(token=token)
         t = django.utils.timezone.now()
-        if user.token_exp_time < t
+        if user.token_time < t
             return HttpResponse('Token expired', status=409)
 
         if 'show' in request.data:
             user.profile = request.data['show']
             user.save()
 
-        return HttpResponse('profile: ' + user.profile, status=200)
+        return HttpResponse('PROFILE: ' + user.profile, status=200)
 
 
 
 
 class Update(viewsets.ViewSet):
 
+    def user_request_type(self, request):
+        data = request.data
+        token = data['token']
+        user = User.objects.get(token=token)
+        if not user:
+            return Response("WRONG_TOKEN")
+        t = django.utils.timezone.now()
+        if user.token_time < t:
 
+            if 'username' in data:
+                user.username = data['username']
+            if 'password' in data:
+                user.password = data['password']
+
+            if 'email' in data:
+                user.email = data['email']
+
+            if 'mobile' in data:
+                user.mobile = data['mobile']
+
+            user.save()
+            return Response("UPDATED")
+        else:
+            return HttpResponse('Token expired', status=409)
 
 
 
