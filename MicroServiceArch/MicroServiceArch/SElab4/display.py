@@ -7,6 +7,8 @@ from django.http import HttpResponse
 from rest_framework import viewsets
 from rest_framework.response import Response
 
+import hashlib
+
 #TODO each user should be able to register, login, show and update their profiles
 
 initiate_values = {"register_count" :0, "login_counts" : 0, "show_counts" : 0, "update_counts" : 0}
@@ -62,13 +64,13 @@ class API_gateway(viewsets.ViewSet):
             return False
 
     def register(self,data):
-        #TODO
+        url = 'http://127.0.0.1:8000/api/register'
     def login(self,data):
-        #TODO
+        url = 'http://127.0.0.1:8000/api/login'
     def show(self,data):
-        #TODO
+        url = 'http://127.0.0.1:8000/api/show'
     def update(self,data):
-        #TODO
+        url = 'http://127.0.0.1:8000/api/update'
 
 
 
