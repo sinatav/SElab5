@@ -62,6 +62,23 @@ class Login(viewsets.ViewSet):
 
 class Show(viewsets.ViewSet):
 
+    def user_request_type(self, request):
+        try:
+            token = request.data['token']
+        except KeyError:
+            return HttpResponse('EMPTY_FIELDS', status=406)
+
+        user = User.objects.get(token=token)
+        t = django.utils.timezone.now()
+        if user.token_exp_time < t
+            return HttpResponse('Token expired', status=409)
+
+        if 'show' in request.data:
+            user.profile = request.data['show']
+            user.save()
+
+        return HttpResponse('profile: ' + user.profile, status=200)
+
 
 
 
