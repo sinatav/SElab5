@@ -8,6 +8,9 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 
 import hashlib
+import datetime
+import random
+import string
 
 #TODO each user should be able to register, login, show and update their profiles
 
