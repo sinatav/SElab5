@@ -12,11 +12,3 @@ class User(models.Model):
     isAdmin = models.BooleanField(default=False)
     token = models.CharField(max_length=250, default="")
     token_time = models.DateTimeField(auto_now=True)
-
-
-class Book(models.Model):
-    title = models.CharField(max_length=250)
-    author = models.CharField(max_length=250)
-    publisher = models.CharField(max_length=250)
-    category = models.CharField(max_length=250)
-    _id = models.AutoField(primary_key=True)

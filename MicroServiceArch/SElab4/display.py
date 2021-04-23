@@ -1,5 +1,5 @@
 from MicroServiceArch.SElab4.models import User
-from django.shortcuts import render
+from MicroServiceArch.Books.models import Book
 import requests
 from django.http import HttpResponse
 
@@ -76,7 +76,6 @@ class Show(viewsets.ViewSet):
 
 
 class Update(viewsets.ViewSet):
-
     def user_request_type(self, request):
         data = request.data
         token = data['token']
@@ -106,8 +105,7 @@ class Update(viewsets.ViewSet):
 initiate_values = {"register_count": 0, "login_counts": 0, "show_counts": 0, "update_counts": 0}
 
 
-class API_gateway(viewsets.ViewSet):
-
+class APIGateway(viewsets.ViewSet):
     def user_request_type(self, request):
         req_type = request.data["type"]
 
@@ -119,7 +117,6 @@ class API_gateway(viewsets.ViewSet):
                 if self.is_request_timeout(initiate_values['register_count']):
                     print("REQUEST_TIMEOUT")
 
-
         elif req_type == "login":
             try:
                 return self.login(request.data)
@@ -127,7 +124,6 @@ class API_gateway(viewsets.ViewSet):
                 initiate_values['login_count'] += 1
                 if self.is_request_timeout(initiate_values['login_count']):
                     print("REQUEST_TIMEOUT")
-
 
         elif req_type == "show":
             try:
