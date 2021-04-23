@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class MicroServiceAppConfig(AppConfig):
+class MicroServiceArchConfig(AppConfig):
     name = 'MicroServiceArch'
