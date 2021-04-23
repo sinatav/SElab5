@@ -1,5 +1,4 @@
-
-from SElab4.models import User
+from MicroServiceArch.SElab4.models import User
 from django.shortcuts import render
 import requests
 from django.http import HttpResponse
@@ -10,8 +9,10 @@ from rest_framework.response import Response
 import hashlib
 import random
 import string
+import django
 
-#TODO each user should be able to register, login, show and update their profiles
+
+# TODO each user should be able to register, login, show and update their profiles
 
 class Register(viewsets.ViewSet):
 
@@ -20,15 +21,14 @@ class Register(viewsets.ViewSet):
         data = request.data
         try:
             user.username = data['username']
-            user.password =  hashlib.md5(data['password'].encode('utf-8')).digest()
-            user.email= data['email']
+            user.password = hashlib.md5(data['password'].encode('utf-8')).digest()
+            user.email = data['email']
             user.mobile = data['mobile']
             user.save()
-           
+
         except KeyError:
             return HttpResponse('EMPTY_FIELDS', status=406)
         return HttpResponse('user registered successfully.', status=200)
-
 
 
 class Login(viewsets.ViewSet):
@@ -36,14 +36,14 @@ class Login(viewsets.ViewSet):
     def user_request_type(self, request):
         try:
             username = request.data['username']
-            password =   str(request.data['password'])
+            password = str(request.data['password'])
 
         except KeyError:
             return HttpResponse('EMPTY_FIELDS', status=406)
         user = User.objects.get(username=username)
         # check if the password is correct or not
         if str(user.password) == str(hashlib.md5(password.encode('utf-8')).digest()):
-            t =  django.utils.timezone.now()
+            t = django.utils.timezone.now()
             if user.token_time > t:
                 return HttpResponse(user.token, status=200)
             else:
@@ -53,8 +53,6 @@ class Login(viewsets.ViewSet):
                 return HttpResponse(user.token, status=200)
         else:
             return HttpResponse("NOT FOUND", status=404)
-
-
 
 
 class Show(viewsets.ViewSet):
@@ -67,7 +65,7 @@ class Show(viewsets.ViewSet):
 
         user = User.objects.get(token=token)
         t = django.utils.timezone.now()
-        if user.token_time < t
+        if user.token_time < t:
             return HttpResponse('Token expired', status=409)
 
         if 'show' in request.data:
@@ -75,8 +73,6 @@ class Show(viewsets.ViewSet):
             user.save()
 
         return HttpResponse('PROFILE: ' + user.profile, status=200)
-
-
 
 
 class Update(viewsets.ViewSet):
@@ -107,26 +103,21 @@ class Update(viewsets.ViewSet):
             return HttpResponse('Token expired', status=409)
 
 
+initiate_values = {"register_count": 0, "login_counts": 0, "show_counts": 0, "update_counts": 0}
 
 
-
-
-
-
-initiate_values = {"register_count" :0, "login_counts" : 0, "show_counts" : 0, "update_counts" : 0}
 class API_gateway(viewsets.ViewSet):
 
-    def user_request_type(self,request):
+    def user_request_type(self, request):
         req_type = request.data["type"]
-
 
         if req_type == "register":
             try:
                 return self.register(request.data)
             except:
-               initiate_values['register_count'] += 1
-               if self.is_request_timeout(initiate_values['register_count']):
-                   print("REQUEST_TIMEOUT")
+                initiate_values['register_count'] += 1
+                if self.is_request_timeout(initiate_values['register_count']):
+                    print("REQUEST_TIMEOUT")
 
 
         elif req_type == "login":
@@ -154,7 +145,7 @@ class API_gateway(viewsets.ViewSet):
                 if self.is_request_timeout(initiate_values['update_count']):
                     print("REQUEST_TIMEOUT")
 
-        else :
+        else:
             return HttpResponse('Bad Request', status=400)
 
     def set_response(self, data, url):
@@ -167,25 +158,18 @@ class API_gateway(viewsets.ViewSet):
         else:
             return False
 
-
-
-    def register(self,data):
+    def register(self, data):
         url = 'http://127.0.0.1:8000/api/register'
         self.set_response(data, url)
-    def login(self,data):
+
+    def login(self, data):
         url = 'http://127.0.0.1:8000/api/login'
         self.set_response(data, url)
-    def show(self,data):
+
+    def show(self, data):
         url = 'http://127.0.0.1:8000/api/show'
         self.set_response(data, url)
-    def update(self,data):
+
+    def update(self, data):
         url = 'http://127.0.0.1:8000/api/update'
         self.set_response(data, url)
-
-
-
-
-
-
-
-

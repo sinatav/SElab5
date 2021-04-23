@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from SElab4.display import API_gateway, Register, Login, Show
+from MicroServiceArch.SElab4.display import API_gateway, Register, Login, Show
 
 urlpatterns = [
     path('admin/', admin.site.urls),

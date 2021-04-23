@@ -1,5 +1,5 @@
-
 from django.db import models
+
 
 # we have two user roles , client and admin, and we have a token field which is what is traded between
 # the different users
