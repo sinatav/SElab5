@@ -192,4 +192,22 @@ class SeeBooks(viewsets.ViewSet):
             })
         return result
 
+
+    def user_request_type(self, request):
+        data = request.data
+        token = data['token']
+        client = User.objects.get(token=token, isAdmin=False)
+        if not client:
+            return Response("no user or not client")
+
+        client.token_generation_time = datetime.datetime.now()
+
+        category, title = None, None
+        if "category" in data:
+            category = data['category']
+        if "title" in data:
+            title = data['title']
+        return Response(self.booker(category, title))
+
+
     
