@@ -18,10 +18,17 @@ from django.urls import path
 
 from MicroServiceArch.SElab4.display import API_gateway, Register, Login, Show
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/main', API_gateway.as_view({'post': 'user_request_type'})),
-    path('api/register', Register.as_view({'post': 'user_request_type'})),
-    path('api/login', Login.as_view({'post': 'user_request_type'})),
-    path('api/profile', Show.as_view({'post': 'user_request_type'})),
+    path('api/main/', APIGateway.as_view({'post': 'user_request_type'})),
+    path('api/register/', Register.as_view({'post': 'user_request_type'})),
+    path('api/login/', Login.as_view({'post': 'user_request_type'})),
+    path('api/profile/', Show.as_view({'post': 'user_request_type'})),
+    path('api/see-book/', SeeBooks.as_view({'post': 'user_request_type'})),
+    path('api/main-book/', BookGateway.as_view({'post': 'user_request_type'})),
+    path('api/create-book/', Create.as_view({'post': 'user_request_type'})),
+    path('api/update-book/', Update.as_view({'post': 'user_request_type'})),
+    path('api/read-book/', Read.as_view({'post': 'user_request_type'})),
+    path('api/delete-book/', Delete.as_view({'post': 'user_request_type'})),
 ]
