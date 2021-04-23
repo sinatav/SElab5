@@ -16,7 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from MicroServiceArch.SElab4.display import API_gateway, Register, Login, Show
+from MicroServiceArch.SElab4.display import APIGateway, Register, Login, Show, SeeBooks
+from MicroServiceArch.Books.display import BookGateway, Create, Update, Read, Delete
 
 
 urlpatterns = [

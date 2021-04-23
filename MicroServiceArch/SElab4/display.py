@@ -10,6 +10,7 @@ import hashlib
 import random
 import string
 import django
+import datetime
 
 
 # TODO each user should be able to register, login, show and update their profiles
@@ -171,10 +172,12 @@ class APIGateway(viewsets.ViewSet):
         self.set_response(data, url)
 
     def see_books(self, data):
-    url = 'http://127.0.0.1:8000/api/see'
-    self.set_response(data, url)
+        url = 'http://127.0.0.1:8000/api/see'
+        self.set_response(data, url)
 
-
+    def see_books(self, data):
+        url = 'http://127.0.0.1:8000/api/see'
+        self.set_response(data, url)
 
 
 class SeeBooks(viewsets.ViewSet):
@@ -212,6 +215,3 @@ class SeeBooks(viewsets.ViewSet):
         if "title" in data:
             title = data['title']
         return Response(self.booker(category, title))
-
-
-    

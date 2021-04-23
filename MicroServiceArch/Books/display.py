@@ -9,7 +9,7 @@ from rest_framework.response import Response
 import datetime
 
 
-class CreateBook(viewsets.ViewSet):
+class Create(viewsets.ViewSet):
     def user_request_type(self, request):
         data = request.data
         token = data['token']
@@ -22,10 +22,10 @@ class CreateBook(viewsets.ViewSet):
         book.author = data['author']
         book.category = data['category']
         book.save()
-        return Response("Book Created Successfully!")
+        return Response("book added")
 
 
-class UpdateBook(viewsets.ViewSet):
+class Update(viewsets.ViewSet):
     def user_request_type(self, request):
         data = request.data
         token = data['token']
@@ -34,9 +34,9 @@ class UpdateBook(viewsets.ViewSet):
             return Response("no user or not admin")
         admin.token_generation_time = datetime.datetime.now()
         book_id = data['id']
-        book = Book.objects.get(book_id=book_id)
+        book = Book.objects.get(_id=book_id)
         if not book:
-            return Response("Book id is Wrong!")
+            return Response("no such book")
         else:
             if 'title' in data:
                 book.username = data['title']
@@ -48,7 +48,7 @@ class UpdateBook(viewsets.ViewSet):
             return Response("Successfully updated")
 
 
-class ReadBook(viewsets.ViewSet):
+class Read(viewsets.ViewSet):
     def user_request_type(self, request):
         data = request.data
         token = data['token']
@@ -57,15 +57,15 @@ class ReadBook(viewsets.ViewSet):
             return Response("no user or not admin")
         admin.token_generation_time = datetime.datetime.now()
         book_id = data['id']
-        book = Book.objects.get(book_id=book_id)
+        book = Book.objects.get(_id=book_id)
         if not book:
-            return Response("Book id is Wrong!")
+            return Response("no such book")
         else:
             return Response(
                 "title : " + book.title + "\nauthor : " + book.author + "\ncategory : " + book.category)
 
 
-class DeleteBook(viewsets.ViewSet):
+class Delete(viewsets.ViewSet):
     def user_request_type(self, request):
         data = request.data
         token = data['token']
