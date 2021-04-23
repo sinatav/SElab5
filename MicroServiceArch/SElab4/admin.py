@@ -1,3 +1,13 @@
 from django.contrib import admin
 
-# in this part we should be able to register
+from MicroServiceArch.SElab4.models import User, Book
+
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Book)
+class BookAdmin(admin.ModelAdmin):
+    pass
