@@ -169,3 +169,27 @@ class APIGateway(viewsets.ViewSet):
     def update(self, data):
         url = 'http://127.0.0.1:8000/api/update'
         self.set_response(data, url)
+
+
+
+
+class SeeBooks(viewsets.ViewSet):
+    def booker(self, category, title):
+        if not category and not title:
+            books = Book.objects.filter()
+        elif category and title:
+            books = Book.objects.filter(title__icontains=title, category__icontains=category)
+        elif category:
+            books = Book.objects.filter(category__icontains=category)
+        elif title:
+            books = Book.objects.filter(title__icontains=title)
+        result = []
+        for b in books:
+            result.append({
+                "title": b.title,
+                "author": b.author,
+                "category": b.category
+            })
+        return result
+
+    
