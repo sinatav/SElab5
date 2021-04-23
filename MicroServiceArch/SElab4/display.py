@@ -181,15 +181,8 @@ class APIGateway(viewsets.ViewSet):
 
 
 class SeeBooks(viewsets.ViewSet):
-    def booker(self, category, title):
-        if not category and not title:
-            books = Book.objects.filter()
-        elif category and title:
-            books = Book.objects.filter(title__icontains=title, category__icontains=category)
-        elif category:
-            books = Book.objects.filter(category__icontains=category)
-        elif title:
-            books = Book.objects.filter(title__icontains=title)
+    def booker(self):
+        books = Book.objects.filter()
         result = []
         for b in books:
             result.append({
@@ -209,9 +202,4 @@ class SeeBooks(viewsets.ViewSet):
 
         client.token_generation_time = datetime.datetime.now()
 
-        category, title = None, None
-        if "category" in data:
-            category = data['category']
-        if "title" in data:
-            title = data['title']
-        return Response(self.booker(category, title))
+        return Response(self.booker())

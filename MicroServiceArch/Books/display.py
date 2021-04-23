@@ -16,7 +16,7 @@ class Create(viewsets.ViewSet):
         admin = User.objects.get(token=token, isAdmin=True)
         if not admin:
             return Response("no user or not admin")
-        admin.token_generation_time = datetime.datetime.now()
+        admin.token_time = datetime.datetime.now()
         book = Book()
         book.title = data['title']
         book.author = data['author']
@@ -32,20 +32,17 @@ class Update(viewsets.ViewSet):
         admin = User.objects.get(token=token, isAdmin=True)
         if not admin:
             return Response("no user or not admin")
-        admin.token_generation_time = datetime.datetime.now()
+        admin.token_time = datetime.datetime.now()
         book_id = data['id']
         book = Book.objects.get(_id=book_id)
         if not book:
             return Response("no such book")
         else:
-            if 'title' in data:
-                book.username = data['title']
-            if 'author' in data:
-                book.mobile = data['author']
-            if 'category' in data:
-                book.password = data['category']
+            book.title = data['title']
+            book.author = data['author']
+            book.category = data['category']
             book.save()
-            return Response("Successfully updated")
+            return Response("book updated")
 
 
 class Read(viewsets.ViewSet):
@@ -55,7 +52,7 @@ class Read(viewsets.ViewSet):
         admin = User.objects.get(token=token, isAdmin=True)
         if not admin:
             return Response("no user or not admin")
-        admin.token_generation_time = datetime.datetime.now()
+        admin.token_time = datetime.datetime.now()
         book_id = data['id']
         book = Book.objects.get(_id=book_id)
         if not book:
@@ -72,7 +69,7 @@ class Delete(viewsets.ViewSet):
         admin = User.objects.get(token=token, isAdmin=True)
         if not admin:
             return Response("no user or not admin")
-        admin.token_generation_time = datetime.datetime.now()
+        admin.token_time = datetime.datetime.now()
         book_id = data['id']
         book = Book.objects.get(_id=book_id)
         if not book:
