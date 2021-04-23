@@ -170,6 +170,10 @@ class APIGateway(viewsets.ViewSet):
         url = 'http://127.0.0.1:8000/api/update'
         self.set_response(data, url)
 
+    def see_books(self, data):
+    url = 'http://127.0.0.1:8000/api/see'
+    self.set_response(data, url)
+
 
 
 
